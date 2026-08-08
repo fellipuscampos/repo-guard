@@ -49,3 +49,6 @@ next-env.d.ts
 /.agents
 /.windsurf
 skills-lock.json
+
+# notas pessoais, nao entra no repo publico
+NEXT_STEPS.md
