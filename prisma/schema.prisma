@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Settings {
+  id          Int    @id @default(1)
+  githubToken String?
+}
+
+model Scan {
+  id        String    @id @default(cuid())
+  repoOwner String
+  repoName  String
+  status    String    @default("running") // running | completed | failed
+  createdAt DateTime  @default(now())
+  finishedAt DateTime?
+  findings  Finding[]
+}
+
+model Finding {
+  id       String @id @default(cuid())
+  scan     Scan   @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  scanId   String
+  type     String // secret | dependency
+  severity String // critical | high | medium | low
+  title    String
+  detail   String
+  filePath String?
+  line     Int?
+
+  @@index([scanId])
+}
