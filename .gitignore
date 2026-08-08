@@ -52,3 +52,7 @@ skills-lock.json
 
 # notas pessoais, nao entra no repo publico
 NEXT_STEPS.md
+
+.vercel
+.env*
+!.env.example

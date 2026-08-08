@@ -37,8 +37,15 @@ function extractNpmPackages(packageLockContent: string): { name: string; version
   });
 }
 
-function severityFromOsv(vuln: any): DependencyMatch["severity"] {
-  const severities: string[] = vuln.severity?.map((s: any) => s.score) ?? [];
+type OsvVuln = {
+  summary?: string;
+  details?: string;
+  severity?: { score?: string }[];
+  database_specific?: { severity?: string };
+};
+
+function severityFromOsv(vuln: OsvVuln): DependencyMatch["severity"] {
+  const severities = vuln.severity?.map((s) => s.score) ?? [];
   const cvss = severities.find((s) => typeof s === "string" && s.startsWith("CVSS"));
   const dbSeverity: string | undefined = vuln.database_specific?.severity;
 
